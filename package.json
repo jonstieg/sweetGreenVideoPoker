@@ -1,0 +1,32 @@
+{
+  "name": "poker",
+  "version": "1.0.0",
+  "description": "video poker app for sweet green",
+  "main": "main.js",
+  "scripts": {
+    "test": "npm test",
+    "postinstall": "ng build --aot -prod",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jonstieg/sweetGreenVideoPoker.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jonstieg/sweetGreenVideoPoker/issues"
+  },
+  "engines": {
+    "node": "8.9.4",
+    "npm": "5.6.0"
+  },
+  "homepage": "https://github.com/jonstieg/sweetGreenVideoPoker#readme",
+  "devDependencies": {
+    "enhanced-resolve": "^3.3.0"
+  },
+  "dependencies": {
+    "express": "^4.16.4",
+    "path": "^0.12.7"
+  }
+}
