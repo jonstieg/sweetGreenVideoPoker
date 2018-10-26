@@ -6,7 +6,8 @@
   "scripts": {
     "test": "npm test",
     "postinstall": "ng build --aot -prod",
-    "start": "node server.js"
+    "start": "node server.js",
+    "ng": "ng"
   },
   "repository": {
     "type": "git",
@@ -27,6 +28,8 @@
   },
   "dependencies": {
     "express": "^4.16.4",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "@angular/cli": "1.4.9",
+    "@angular/compiler-cli": "^4.4.6"
   }
 }
