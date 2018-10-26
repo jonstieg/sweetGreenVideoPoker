@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="pokerApp">
+<meta charset="UTF-8">
+
+<head>
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.5/angular.min.js"></script>
+    <link href="main.css" rel="stylesheet">
+    <script src="main.js"></script>
+</head>
+
+<body ng-controller="PokerController" class="background-of-website">
+    <div class="row-of-items">
+        <div ng-click="cardsDealt = !cardsDealt" class="pokerchip" ng-class="cardsDealt ? 'green' : 'red'"></div>
+        <div class="pokerchip black"></div>
+    </div>
+    <div class="row-of-items">
+        <button ng-click="card1Turned = !card1Turned" 
+                class="card-back"
+                ng-class="card1Turned ? 'card-back-image' : '' ">
+                    <div class="number-black" ng-if="!card1Turned">7♣️</div>
+        </button>
+        <button class="card-back">
+            <div class="number-black">7♣️</div>
+        </button>
+        <button class="card-back">
+            <div class="number-red">K♦️</div>
+        </button>
+        <button class="card-back">
+            <div class="number-red">A♥️</div>
+        </button>
+        <button class="card-back">
+            <div class="number-black">10♠️</div>
+        </button>
+    </div>
+
+</body>
+
+
+<!-- create a directive for each card -->
+<!-- have all five cards created with a loop -->
+<!-- have an object for the deck -->
