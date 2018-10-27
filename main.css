@@ -27,6 +27,9 @@
     background-image: url("card-back.png");
 }
 
+.disabled-button-cursor {
+  cursor: default;
+}
 .number-black {
     color: black;
     font-size: 80px;

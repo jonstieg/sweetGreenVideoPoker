@@ -3,40 +3,32 @@
 <meta charset="UTF-8">
 
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.5/angular.min.js"></script>
     <link href="main.css" rel="stylesheet">
     <script src="main.js"></script>
+    <script src="deck.js"></script>
 </head>
 
-<body ng-controller="PokerController" class="background-of-website">
+<body ng-controller="PokerController as vm" class="background-of-website" ng-keypress="vm.keyWasPressed($event)">
     <div class="row-of-items">
-        <div ng-click="cardsDealt = !cardsDealt" class="pokerchip" ng-class="cardsDealt ? 'green' : 'red'"></div>
-        <div class="pokerchip black"></div>
+        <div ng-click="vm.buttonClicked()" class="pokerchip" ng-class="vm.cardsDealt ? 'red' : 'green'"></div>
     </div>
     <div class="row-of-items">
-        <button ng-click="card1Turned = !card1Turned" 
+        <button ng-repeat="card in vm.theFlop track by $index"
+                ng-click="card.value = !card.value" 
+                ng-disabled="vm.cardsDealt"
                 class="card-back"
-                ng-class="card1Turned ? 'card-back-image' : '' ">
-                    <div class="number-black" ng-if="!card1Turned">7♣️</div>
-        </button>
-        <button class="card-back">
-            <div class="number-black">7♣️</div>
-        </button>
-        <button class="card-back">
-            <div class="number-red">K♦️</div>
-        </button>
-        <button class="card-back">
-            <div class="number-red">A♥️</div>
-        </button>
-        <button class="card-back">
-            <div class="number-black">10♠️</div>
+                ng-class="{'card-back-image': card.value, 'disabled-button-cursor': vm.cardsDealt }">
+                    <div class="number-{{(card.suit == '♥️' || card.suit == '♦️') ? 'red' : 'black'}}" 
+                        ng-if="!card.value">{{card.key.letter + card.key.suit}}
+                    </div>
         </button>
     </div>
-
+    <div class="row-of-items">
+        <div class="number-black">Score: {{vm.score}}</div>
+    </div>
+    <div class="row-of-items">
+        <div class="number-black" ng-if="vm.lastScore>0">+{{vm.lastScore}}</div>
+    </div>
 </body>
-
-
-<!-- create a directive for each card -->
-<!-- have all five cards created with a loop -->
-<!-- have an object for the deck -->
