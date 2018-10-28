@@ -14,7 +14,7 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
-  box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.5), 0 0 3px 0 rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.5);
   border-width: 13px;
   border-color: white;
   border-style: solid;
@@ -37,7 +37,7 @@
 }
 
 .non-disabled-card-cursor:hover {
-  box-shadow: 5px 4px 0 0 rgba(0, 0, 0, 0.5), 0 0 3px 0 rgba(0, 0, 0, 0.4);
+  box-shadow: 5px 4px 0 0 rgba(0, 0, 0, 0.5);
 
 }
 
