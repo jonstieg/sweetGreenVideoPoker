@@ -1,11 +1,10 @@
 (function () {
     angular.module('deck', []);
-
     angular.module('deck').factory('deckFactory', deckFactory);
 
     function deckFactory() {
-
-        var suits = [ "♣️", "♦️", "♥️", "♠️" ];
+        // i'm using emoji for the cards - makes my life way easier!
+        var suits = ["♣️", "♦️", "♥️", "♠️"];
 
         function Card(suit, letter) {
             return {
@@ -40,5 +39,4 @@
             createNewDeck: Deck
         };
     }
-
 })();

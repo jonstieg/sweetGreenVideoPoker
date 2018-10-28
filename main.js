@@ -1,16 +1,14 @@
-
 (function () {
 	angular.module('pokerApp', ['deck']);
-
 	angular
 		.module('pokerApp')
 		.controller('PokerController', PokerController);
 
 	PokerController.$inject = ['deckFactory'];
 
-
 	function PokerController(deckFactory) {
 		var self = this;
+
 		self.deal5 = deal5;
 		self.buttonClicked = buttonClicked;
 		self.randomNextCard = randomNextCard;
@@ -18,87 +16,104 @@
 		self.keyWasPressed = keyWasPressed;
 
 		self.score = 0;
-		self.lastScore = 0;
+		// last round's score is only shown if zero or above
+		self.lastScore = NaN;
 		self.deckOfCards = deckFactory.createNewDeck();
 		self.nextCard = self.randomNextCard();
-		self.cardIndex = 0;
+		self.nextCardIndex = 0;
 		self.theFlop = self.deal5();
-		function deal5() {
-			var set = [];
-			if (self.deckOfCards) {
-				for (var i = 0; self.cardIndex < 5; self.cardIndex++) {
-					set.push({ key: self.deckOfCards.cards[self.nextCard[self.cardIndex]], value: false });
-				}
-			}
+		self.cardsDealt = true;
 
-			return set;
+		// i am creating an array of 52 random numbers that i'll use to grab the next card on the deck
+		function randomNextCard() {
+			var randomCards = [];
+			var randomNumber;
+			do {
+				randomNumber = Math.floor(Math.random() * 52);
+				if (!randomCards.includes(randomNumber)) {
+					randomCards.push(randomNumber);
+				}
+			} while (randomCards.length < 52)
+			return randomCards;
 		}
+
+		function deal5() {
+			var flop = [];
+			for (var i = 0; self.nextCardIndex < 5; self.nextCardIndex++) {
+				flop.push({ key: self.deckOfCards.cards[self.nextCard[self.nextCardIndex]], value: false });
+			}
+			return flop;
+		}
+
 		function buttonClicked() {
-			if (!self.cardsDealt) {
+			if (self.cardsDealt) {
 				for (var i = 0; i < 5; i++) {
 					if (self.theFlop[i].value) {
-						self.theFlop[i].key = self.deckOfCards.cards[self.nextCard[self.cardIndex]];
-						self.cardIndex = self.cardIndex + 1;
+						self.theFlop[i].key = self.deckOfCards.cards[self.nextCard[self.nextCardIndex]];
+						self.nextCardIndex = self.nextCardIndex + 1;
 						self.theFlop[i].value = false;
 					}
 				}
 				self.lastScore = self.scoreTheHand();
 				self.score = self.score + self.lastScore;
 			} else {
-				self.lastScore = 0;
+				self.lastScore = NaN;
 				self.nextCard = self.randomNextCard();
-				self.cardIndex = 0;
+				self.nextCardIndex = 0;
 				self.deckOfCards.reset();
 				self.theFlop = self.deal5();
 			}
 
 			self.cardsDealt = !self.cardsDealt;
 		}
-		function randomNextCard() {
-			var arr = [];
-			var randomNumber;
-			do {
-				randomNumber = Math.floor(Math.random() * 52);
-				if (!arr.includes(randomNumber)) {
-					arr.push(randomNumber);
-				}
-			} while (arr.length < 52)
-			return arr;
-		}
+
 		function scoreTheHand() {
-			var arr = [];
+			var toScore = [];
 			for (var i = 0; i < 5; i++) {
 				var current = self.theFlop[i].key.letter;
 				switch (current) {
+					case 'A':
+						toScore.push(14);
+						break;
 					case 'K':
-						arr.push(13);
+						toScore.push(13);
 						break;
 					case 'Q':
-						arr.push(12);
+						toScore.push(12);
 						break;
 					case 'J':
-						arr.push(11);
-						break;
-					case 'A':
-						arr.push(14);
+						toScore.push(11);
 						break;
 					default:
-						arr.push(parseInt(current));
+						toScore.push(parseInt(current));
 				}
-
 			}
-			console.log(arr.sort((a, b) => a - b));
+
+			// swap ace to be a 1 if there might be a low straight
+			if (toScore.includes(2) && toScore.includes(14)) {
+				for (var i = 0; i < 5; i++) {
+					if (toScore[i] == 14) {
+						toScore[i] = 1;
+					}
+				}
+			}
+
+			// sort for easier straight checking
+			toScore = toScore.sort((a, b) => a - b);
 
 			var isItAStraight = true;
 			var isThereAPair = false;
+
 			for (var i = 1; i < 5; i++) {
-				if (arr[i] == arr[i - 1] + 1) {
-					isItAStraight = true && isItAStraight;
-				} else {
-					isItAStraight = false;
+				if (isItAStraight) {
+					if (toScore[i] == toScore[i - 1] + 1) {
+						isItAStraight = true && isItAStraight;
+					} else {
+						isItAStraight = false;
+					}
 				}
 
-				if (arr[i] == arr[i - 1]) {
+				if (toScore[i] == toScore[i - 1]) {
 					isThereAPair = true;
 				}
 			}
@@ -112,26 +127,20 @@
 			}
 		}
 
+		// i really like keyboard shortcuts so I added them to the game - makes it much more fun to play
 		function keyWasPressed(event) {
-				if (event.key == '1') {
-					self.theFlop[0].value = !self.theFlop[0].value;
+			var cardsToFlip = ["1", "2", "3", "4", "5"];
+
+			// you can only switch over cards before they are swapped
+			if (self.cardsDealt) {
+				if (cardsToFlip.includes(event.key)) {
+					var indexOfCard = parseInt(event.key) - 1;
+					self.theFlop[indexOfCard].value = !self.theFlop[indexOfCard].value;					
 				}
-				else if (event.key == '2') {
-					self.theFlop[1].value = !self.theFlop[1].value;
-				}
-				else if (event.key == '3') {
-					self.theFlop[2].value = !self.theFlop[2].value;
-				}
-				else if (event.key == '4') {
-					self.theFlop[3].value = !self.theFlop[3].value;
-				}
-				else if (event.key == '5') {
-					self.theFlop[4].value = !self.theFlop[4].value;
-				}
-				else if (event.keyCode == 32) {
-					self.buttonClicked();
-				}
+			}
+			if (event.keyCode == 32) {
+				self.buttonClicked();
+			}
 		}
 	}
-
 })();
