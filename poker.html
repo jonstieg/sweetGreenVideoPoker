@@ -3,6 +3,7 @@
 <meta charset="UTF-8">
 
 <head>
+    <title>Video Poker</title>
     <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.5/angular.min.js"></script>
     <link href="main.css" rel="stylesheet">
@@ -19,7 +20,7 @@
                 ng-click="card.value = !card.value" 
                 ng-disabled="!vm.cardsDealt"
                 class="card-shape"
-                ng-class="{'card-back-image': card.value, 'disabled-card-cursor': !vm.cardsDealt }">
+                ng-class="{'card-back-image': card.value, 'non-disabled-card-cursor': vm.cardsDealt }">
                     <div class="card-number-{{(card.suit == '♥️' || card.suit == '♦️') ? 'red' : 'black'}}" 
                         ng-if="!card.value">{{card.key.letter + card.key.suit}}
                     </div>
@@ -29,6 +30,6 @@
         <div class="card-number-black">Score: {{vm.score}}</div>
     </div>
     <div class="row-of-items">
-        <div class="card-number-black" ng-if="vm.lastScore>=0">+{{vm.lastScore}}</div>
+        <div class="card-number-black" ng-if="vm.lastScore!==''">+{{vm.lastScore}}</div>
     </div>
 </body>

@@ -16,8 +16,7 @@
 		self.keyWasPressed = keyWasPressed;
 
 		self.score = 0;
-		// last round's score is only shown if zero or above
-		self.lastScore = NaN;
+		self.lastScore = "Welcome to Video Poker+"
 		self.deckOfCards = deckFactory.createNewDeck();
 		self.nextCard = self.randomNextCard();
 		self.nextCardIndex = 0;
@@ -57,7 +56,7 @@
 				self.lastScore = self.scoreTheHand();
 				self.score = self.score + self.lastScore;
 			} else {
-				self.lastScore = NaN;
+				self.lastScore = '';
 				self.nextCard = self.randomNextCard();
 				self.nextCardIndex = 0;
 				self.deckOfCards.reset();
