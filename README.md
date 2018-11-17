@@ -1,2 +1,2 @@
 # sweetGreenVideoPoker
-https://sweet-green-video-poker.herokuapp.com/
+https://sweet-video-poker.herokuapp.com/
